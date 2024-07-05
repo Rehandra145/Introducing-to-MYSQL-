@@ -1,0 +1,179 @@
+============================
+REVIEW MATERI DATABASE DASAR 
+============================
+By : Rehandra
+Date : 05 - Juli - 2024
+
+
+=========
+--NOTE--
+=========
+Ini hanya sekedar pembahasan mengenai materi querry dasar MySQL, untuk penginstallan dan konfigurasi software MySQL workbench bisa dilakukan secara mandiri, lihat internet kalua ga bisa.
+Semua hal yang akan kamu lakukan di MySQL workbench harus dilakukan secara manual, tidak ada ekstensi atau apa pun itu, semisal kamu melakukan typo disebuah table yang sudah kamu eksekusi maka kamu harus drop table dulu baru ubah code kamu yang salah tadi lalu kemudian eksekusi lagi. Usahakan jangan ada typo, syntax eror atau logical eror, karna kalau kamu ketemu eror maka kamu akan kesusahaan sendiri nantinya, karena cara ngoding sql beda sama ngoding Bahasa lain. Semangat ya, jangan manja.
+dalam MySQL ada beberapa hal yang harus diingat : 
+1. DATABASE = ya database, kumpulan dari semua data yang diolah sedemikian rupa. karna kita disini konteksnya sql, data itu berupa table yang berisi sekumpulan querry yang berisikan nilai nilai tertentu
+
+2. TABLE = struktur utama yang digunakan untuk menyimpan data, terdiri dari baris dan kolom yang terorganisir. karakteristik : kolom, baris, primary key, index, relationship (foreign key)
+
+3. DROP = berarti hapus, bisa drop database, drop table, drop procedure. Hapus disini bukan berarti line codenya hilang, tapi disini hapus berarti menghapusnya dari server tapi line codenya ttp ada. 
+
+4. * = asterisk berarti semua kolom yang ada di tabel
+
+5. Tipe data. di mysql ada banyak tipe data tapi yang paling umum digunakan VARCHAR, CHAR, DECIMAL, INT. penulisannya itu nama variabel di kiri + tipe data dikanan + paramater berapa digit yang akan digunakan. contohnya variabel nama, karena nama itu bisa terdiri dari huruf maka kita menggunakan VARCHAR dan nama bisa terdiri dari banyak digit jadi kita misalkan 100 digit saja, maka bentuknya akan menjadi seperti ini : nama VARCHAR(100). gitu juga buat tipe data lain.
+
+6. Pemisah antara inisialisasi variable adalah tanda koma (,)
+
+7. Dipengujung sebuah Tindakan harus diakhiri dengan tanda semicolon (;)
+
+
+============
+--SHORTCUT--
+============
+CTRL + Enter = eksekusi line (block line yang akan dieksekusi, jika tidak di block maka akan menjalankan seluruh line yang ada)
+
+=================================
+--MATERI 1 : PEMBUATAN DATABASE--
+=================================
+Beberapa querry yang umum digunakan untuk membuat database :
+1. CREATE DATABASE ~membuat db ex : CREATE DATABASE my_db;
+
+2. USE ~menggunakan db ex : USE my_db;
+
+3. DROP DATABASE ~menghapus db ex : DROP DATABASE my_db;
+
+NOTE : Ketika anda keluar dari mysql workbench lalu anda kembali login dan mengakses server yang sama lagi, anda dapat memblock USE my_db; kemudian eksekusi lagi, hal ini harus dilakukan agar anda bisa mengakses database tersebut kembali
+
+
+==============================
+--MATERI 2 : PEMBUATAN TABLE--
+=============================
+Beberapa querry yang umum digunakan untuk membuat TABLE
+1. CREATE TABLE ~membuat table ex : CREATE TABLE mahasiswa;
+-- Dalam membuat sebuah TABLE, ada beberapa hal yang harus diperhatikan. Pertama adalah adanya PRIMARY KEY, sesuai dengan namanya ini bertindak sebagai data Utama atau data yang sifatnya unik dan krusial (unik disini berarti data yang ada sudah pasti berbeda dengan data lain), data ini juga nanti yang bisa menjadi penghubung dengan TABLE lain misalnya pada stored PROCEDURAL, primary  key inilah nanti yang digunakan sebagai penghubung antara TABLE dengan TABLE lain menggunakan metode JOIN. Contoh penggunaan primary key : nama VARCHAR(100) PRIMARY KEY,. Kedua adalah memasukan aturan atau batasan format data yang masuk menggunakan CONSTRAINT lalu di check menggunakan CHECK, sebagai contoh : 
+CONSTRAINT namaMetode CHECK(CHAR_LENGTH(NIM)=8), ini berarti data NIM yang masuk harus berjumlah 8 digit.
+
+2. FOREIGN KEY ~secara simpel, ini digunakan untuk memastikan primary key yang digunakan untuk relation antar TABLE bernilai sama disetiap TABLE nya serta untuk membantu pemeliharan data melalui beberapa kombinasi ON UPDATE dan ON DELETE ex : ON UPDATE CASCADE ini berarti jika FOREIGN KEY yang ada di table utama atau parent diubah maka nilai pada table children atau table anak juga berubah. contoh lain : ON DELETE SET NULL berarti jika nilai di TABLE utama diubah maka nilai di TABLE anak di  set ke tidak memiliki nilai atau NULL. Contoh penggunaan FOREIGN KEY :
+CONSTRAINT syarat FOREIGN KEY (nama) REFERENCES jurusan(nama) ON UPDATE CASCADE ON DELETE SET NULL; ini berarti kolom nama yang ada di TABLE ini harus sama dengan kolom nama yang ada di TABLE jurusan, dan jika ada niai perubahan di TABLE jurusan maka nilai nama di TABLE ini juga akan berubah sesuai dengan nilai yang berubah dan jika data nama di TABLE jurusan di hapus maka data nama di TABLE ini akan di set ke tidak ada data atau NULL. 
+
+3. SELECT ~untuk memilih data atau  table ex : SELECT * FROM mahasiswa; ini berarti perintah memilih semua kolom yang ada pada table mahasiswa
+
+4. WHERE ~sebagai penentu kondisi dari sebuah perintah yang akan dilakukan ex : SELECT * FROM mahasiswa WHERE semester = '1'; ini berarti dia akan memilih semua kolom di TABLE mahasiswa yang mana mahasiswa yang dipilih adalah mahasiswa semester 1
+
+5. DROP TABLE ~menghapus TABLE, ini biasanya dilakukan ketika ada kesalahan penulisan syntaks atau logical error 
+ex : DROP TABLE mahasiswa; perintah ini berarti menghapus table mahasiswa 
+
+6. UPDATE, SET~untuk memperbaharui nilai yang ada di kolom table tertentu ex : UPDATE mahasiswa SET semester = '2' WHERE semester = '1' ini berarti perintah untuk memperbaharui data di table mahasiswa yang mana semua nilai semester yang bernilai '1' akan di set menjadi '2'
+
+7 . VALUE ~memberitahu nilai yang akan diberikan sesuai dengan kolom yang ada di TABLE ex : VALUE ('John', 'Male')
+
+8. INSERT, INTO ~memasukkan nilai kedalam TABLE ex : INSERT INTO mahasiswa VALUE ('John', 'Male', '1') ini berarti perintah untuk memasukkan nilai yang ada di parameter VALUE ke TABLE mahasiswa
+
+9. DELETE ~sesuai dengan namanya, ini digunakan untuk menghapus TABLE yang ada ex : DELETE FROM mahasiswa WHERE semester = '14' ini berarti perintah untuk menghapus data di TABLE mahasiswa yang dimana nilai dari kolom semester adalah '14' (lagian itu kuliah apa kredit motor coegg, sampai 7 tahun wokwokwokw).
+
+Sekian querry yang umum dalam pembuatan TABLE sederhana, untuk praktek bisa lihat file 'Music db' sebagai panduan.
+
+
+===============================================
+--MATERI 3 : DATA MANIPULATION LANGUAGE (DML)--
+===============================================
+Data Manipulation Language atau yang lebih sering disebut DML adalah cara cara atau metode yang digunakan untuk mengolah data menggunakan dasar dasar logika pemograman sehingga menghasilkan output yang diinginkan, tidak banyak yang bisa di bahas disini karena seperti memahami dasar logika pada umumnya, anda diharuskan lebih banyak melakukan praktek dibandingkan membaca teori, namun ada beberapa querry dasar yang perlu kamu ingat karena querry ini lah nanti yang akan umum keluar 
+1. VIEW ~untuk memilih beberapa kolom dai tabel terntentu kemudian disatukan dalam satu TABLE, ex : 
+CREATE VIEW kampus AS SELECT * mahasiswa WHERE semester = '2'; ini sama saja dengan querry SELECT biasa, namun di aliakan sebagai kampus
+
+2. BETWEEN ~untuk memberikan instruksi bahwa data yang dipilih berada di antara batas atas dan batas bawah yang dihasilkan querry ini, ex :
+CREATE VIEW kampus AS SELECT * FROM mahasiswa WHERE semester BETWEEN '1' AND '3'; ini berarti perintah untuk membuat view dengan data diambil dari TABLE mahasiswa dan yang dipilih hanyalah data mahasiswa antara semester 1 dan mahasiswa semester 3. Bisa diperhatikan disini juga memakai querry AND sebagai penghubung antara nilai.
+
+3. LIKE ~untuk menyeleksi sesuai dengan perbandingan nilai tertentu ex : 
+CREATE VIEW kampus AS SELECT * FROM mahasiswa WHERE semester BETWEEN '1' AND '3' AND nama LIKE '% %'; ini berarti perintah querry untuk membuat VIEW dengan nama kampus dimana data diambil dari TABLE mahasiswa dan berada di bentang semester 1 dan 3 dan Namanya harus terdiri dari 2 kata.
+
+4. LIMIT ~untuk membuat Batasan data yang akan muncul di sebuah view atau TABLE ex :
+CREATE VIEW kampus AS SELECT * FROM mahasiswa WHERE semester BETWEEN '1' AND '3' nama LIKE '% %' LIMIT 2; ini berarti data yang akan tampil di view kampus hanyalah 2 data saja.
+
+5. CONCAT ~untuk menggabungkan sebuah data dari kolom tertentu dengan string yang sudah diatur
+ex : SELECT CONCAT('Semester', semester) AS dataSem FROM mahasiswa; ini berarti menggabungkan kata 'semester' dengan data yang ada di kolom semester, disini sebagai contoh jika data yang ada adalah 1 maka output yang akan muncul adalah "Semester 1" dan ditampilkan di kolom yang diberi nama dataSem.
+
+6. REGEXP ~fungsinya hampir sama dengan LIKE namun REGEXP digunakan untuk data yang lebih spesifik
+ex : CONSTRAINT kodeMK CHECK(kodeMatkul REGEXP 'IF[0-9][0-9][0-9]'), ini berarti kode matkul yang masuk ke dalam table harus diawali dengan IF dan diikuti oleh 3 digit angka.
+
+7. DATE_FORMAT ~untuk Menyusun format dari tipe data DATETIME, jika yang digunakan dalam penyusunan format adalah '%M %Y' maka yang akan muncul adalah 'MEI 2004' tapi jika yang digunakan adalah '%m %y' maka yang akan muncul adalah '05 04'
+ex : SELECT DATE_FORMAT(DateOfBirth, '%d %M %Y') AS TanggalLahir FROM mahasiswa; ini berarti memilih data DateOfBirth dari TABLE mahasiswa dan disusun ulang dengan format yang telah diatur dan ditampilkan di kolom yang bernama TanggalLahir.
+
+8. MONTHNAME, DATEOFWEEK, DATEOFMONTH ~untuk menyeleksi data sesuai dengan nama bulan, nama hari, atau tanggal
+ex : SELECT * FROM mahasiswa WHERE MONTHNAME('December'); ini berarti menampilkan semua data yang ada di TABLE mahasiswa, yang mana data yang ditampilkan hanyalah mahasiswa yang lahir di bulan Desember.
+
+9. CHAR_LENGTH ~bisanya untuk melakukan pengecekan terhadap kolom yang digitnya sudah diatur menjadi digit tertentu
+ex CONSTRAINT nim CHECK(CHAR_LENGTH(NIM) = 8), ini berarti data NIM yang dimasukkan harus terdiri dari 8 digit.
+
+10. JOIN ~ini digunakan untuk menghubungkan TABLE dengan TABLE lainnya dengan memanfaatkan FOREIGN KEY yang ada di antara TABLE tersebut
+ex : misalkan kita dimintak untuk menampilkan data nama dari TABLE mahasiswa dan data mataKuliah dari TABLE jurusan, maka untuk menyatukan dua TABLE itu kita akan menggunakan FOREIGN KEY nya, disini dimisalkan FOREIGN KEY nya adalah data kodeJurusan maka code nya akan menjadi seperti ini :
+SELECT nama, mataKuliah FROM mahasiswa AS a JOIN jurusan AS b ON a.kodeJurusan = b.kodeJurusan;
+
+11. ORDERED BY ~untuk mengurutkan data yang akan ditampilkan sesuai dengan abjad atau angka
+ex : SELECT * FROM mahasiswa WHERE semester = '1' ORDERED BY nama; ini berarti perintah untuk untuk mengambil semua data yang ada di TABLE mahasiswaa dimana yang akan dipilih ada mahasiswa yang sedang berada di semester 1 dan data ditampilkan sesuai dengan abjad berdasarkan data dari kolom nama.
+
+12. SUM, COUNT, MAX, MIN ~untuk melakukan operasi sesuai dengan nama querrynya, bisa dilakukan untuk tipe data INT 
+ex : SELECT namaProdi, COUNT(semester) AS banyakMahasiswa FROM jurusan AS a JOIN mahasiswa AS b ON a.kodeJurusan = b.kodeJurusan WHERE semester = '2'; ini berarti perintah untuk menampilkan nama prodi dan banyak mahasiswa semester 1 yang akan ditampilkan sebagai kolom banyakMahasiswa.
+
+13. GROUP BY ~ini wajib dilakukan Ketika anda melakukan agregasi (COUNT, SUM, MAX, MIN) pada saat melakukan DML ataupun dalam PROCEDURE
+ex : SELECT a.namaProdi, b.SUM(banyakMotor) FROM jurusan AS a JOIN mahasiswa AS b ON a.kodeJurusan = b.kodeJurusan WHERE b.jurusan = 'Teknik Elektro'GROUP BY a.namaProdi; kode ini adalah kode dari studi kasus dimana diminta untuk menampilkan jumlah banyak motor mahasiswa jurusan Teknik Elektro dan ditampilkan sesuai dengan nama prodi.
+
+14. ALTER ~untuk  merujuk kepada TABLE, biasanya digunakan untuk menambahkan kolom ke TABLE baru
+ex : ALTER TABLE mahasiswa ADD NoPhone VARCHAR(10); Ini berarti perintah untuk menambahkan kolom no hp ke TABLE mahasiswa.
+
+15. DISTINCT ~digunakan Ketika ingin mengambil data yang unik, ini berarti data yang bernilai sama atau duplikat tidak akan diambil
+ex : SELECT DISTINCT merkLaptop FROM mahasiswa; ini berarti dia akan mengambil data merk laptop yang berbeda dan tidak akan mengambil merk laptop atau laptop dengan seri yang sama dari TABLE mahasiswa
+
+16. COALESCE ~untuk mengambil nilai pertama yang tidak NULL dari beberapa kolom atau parameter
+ex : SELECT COALESCE(sks, 0) FROM mahasiswa; ini berarti mengambil nilai dari TABLE sks dan jika terdapat data yang bolong atau NULL maka data itu akan di set ke 0.
+
+17. RIGHT JOIN ~sama sepeti JOIN namun dia akan tetap mengambil semua kolom bahkan jika kolom tersebut kosong dan yang akan ditampilkan di TABLE adalah NULL untuk kolom yang tidak memiliki kecocokan 
+
+mungkin sekian querry yg umum digunakan dalam DML, masih banyak querry lain yang bisa kamu gunakan, kamu bisa mencari modulnya diinternet. Tapi untuk pembelajaran dasar,querry diatas rasanya sudah cukup. untuk praktek codingnya kamu bisa lihat file 'DML exercise', disana ada beberapa soal sekaligus kode penyelesinnya, semoga kamu paham.
+
+
+======================================
+--MATERI 3 : PROCEDURE AND FUNCTION--
+======================================
+
+	PROCEDURE dan FUNCTION sebenarnya tidak memiliki perbedaan yang begitu jauh, yang menjadi perbedaan adalah pengembalian nilainya saja, PROCEDURE dapat mengembalikan beberapa nilai sekaligus melalui parameter sedangkan FUNCTION hanya dapat mengembalikan satu nilai dengan tipe data apa saja dengan menggunakan 'RETURN'. Tetapi FUNCTION dapat digunakan secara langsung bersamaan dengan querry lain seperti SELECT, WHERE, ORDER BY, DLL sedangkan PROCEDURE tidak dapat digunakan secara langsung melainkan harus menggunakan querry khusus yaitu CALL.
+	Ada beberapa hal yang harus diingat dalam pembuatan stored procedure ataupun function, berikut adalah daftarnya : 
+
+1. Menggunakan DELIMITER sebagai pengganti semicolon.
+	DELIMITER adalah perintah yang digunakan untuk memberitahu bahwa kita mengganti tanda semicolon dengan tanda apa yang kita inginkan untuk sementara, hal ini dilakukan untuk menghindari eror yang dapat terjadi karena ambiguitas tanda semicolon yang menandakan akhir dari sebuah perintah. Hal ini secara tidak langsung mengatakan bahwa Ketika kita membuat stored procedure atau function berarti kita akan membuat dan menggabungkan beberapa kalimat perintah. Perlu diingat Ketika anda telah mendefinisakan DELIMITER pengganti di awal program maka kita juga harus mendefinisikan ulang DELIMITER tersebut ke symbol awal di akhir program.
+
+2. Penggunaan parameter
+	Stored procedure dan function biasanya dirancang menggunakan parameter yang biasa digunakan untuk meminta input dari user atau pengguna, parameter ini bisa dalam bentuk tipe data apapun. Parameter ini lah yang nanti dimanipulasi dengan sedemikian rupa untuk menjadi triger agar stored procedure dapat mengambalikan beberapa nilai dari satu TABLE atau dari beberapa TABLE yang relationnya sudah diatur. Sebuah stored procedure dan function juga bisa saja tidak mempunyai sebuah parameter yang berarti stored procedure atau function ini tidak membutuhkan trigger atau inputan dari pengguna untuk mengembalikan nilai. Biasanya stored procedure atau function tanpa parameter digunakan untuk membersihkan TABLE, memperbarui nilai di kolom tertentu, atau menjalankan tugas yang tidak memerlukan validasi input.
+
+3. Mengawali dan mengakhiri kalimat perintah dalam PROCEDURE atau FUNCTION
+	Ketika anda membuat stored procedure atau function maka anda perlu memberitahu kapan anda memulai dan mengakhiri kalimat perintah tersebut menggunakan BEGIN dan END;. Melanjuti pembahasan mengenai DELIMITER tadi, anda perlu memastikan bahwa anda menggunakan tanda semicolon untuk menutup kalimat perintah dan menggunakan DELIMITER sementara yang telah anda atur untuk menutup stored procedure atau function
+
+4. Menghindari ambiguitas ketika menggabungkan TABLE
+	Mungkin masalah ini terdengar sepele, namun eror karna ambiguitas bisa saja terjadi ketika anda tidak rinci dalam memanggil kolom atau dalam menghubungkan TABLE. untuk menghindari eror karena ambiguitas ini, maka anda dapat menggunakan AS untuk membuat nama panggilan untuk sebuah TABLE, sehingga anda dapat menuliskan secara rinci bahwa kolom yang anda pilih berasal dari TABLE mana, dengan cara ini diharapkan anda dapat terhindar dari eror karena ambiguitas.
+
+5. Penggunaan agregasi
+	Agregasi atau operasi operasi yang memanfaatkan tipe data INT diantaranya SUM, COUNT, AVG dll. ketika anda menggunakan agregasi ketika pembuatan stored procedure dan function maka anda harus mengakhirinya dengan GROUP BY, hal ini dilakukan untuk menghindari eror syntaks yang pasti terjadi.
+
+6. Penggunaan
+	Untuk menggunakan stored function dan function yang telah anda buat, anda dapat menggunakan 'CALL procedure(parameter)' untuk stored procedure yang memiliki parameter dan 'CALL procedure()' untuk stored procedure yang tidak memiliki parameter, sedangkan untuk penggunaan function anda dapat menggunakan 'SELECT nama_function(parameter)' untuk function yang mempunyai parameter dan 'SELECT nama_function()' untuk function yang tidak memiliki parameter, function juga dapat digunakan selayaknya kolom pada umumnya sebagai contoh, 'SELECT * FROM kolom WHERE nama_function() LIKE 'A%';'
+
+7. DROP
+	Ketika anda bahwa anda mempunyai kesalahan di stored procedure atau function yang sudah anda eksekusi, anda dapat menggunakan 'DROP PROCEDURE IF EXISTS nama_procedure' untuk DROP PROCEDURE dan 'DROP FUNCTION IF EXISTS nama_function' untuk DROP FUNCTION.
+
+Sekian saja rasanya untuk pembuatan procedure atau function, untuk praktek coding saya telah menyediakan beberapa soal Latihan untuk panduan, silahkan cek file 'Procedure Exercise'
+
+
+===========
+--PENUTUP--
+===========
+Mungkin sekian saja review materi belajar MYSQL untuk pemula dari saya, jika ada kesalahan dalam penulisan materi ataupun ketidaktepatan dalam pemilihan kata saya meminta maaf sebesar besarnya. Untuk soal Latihan mandiri tanpa panduan anda bisa melihat file 'DML Project' dan 'Toko DB' sebagai databasenya.
+Terimakasih telah menyimak, semoga materi ini bisa menambah wawasan dan bermanfaat bagi kita semua.
+Assalamualaikum Wr Wb.
+
+
+
+																	Best Regards,
+																	  Rehandra
+
+
+
+IG : Handeraaa
